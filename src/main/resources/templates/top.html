@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8">
+        <link th:href="@{/css/style.css}" rel="styleSheet">
+        <title>TOP</title>
+    </head>
+
+    <body>
+        <div class="header-contents">
+            <h1>匿名掲示板</h1>
+        </div>
+
+        <div class="main-contents">
+            <a href="/new">
+                <button class="new-button" type="button">新規投稿</button>
+            </a>
+
+            <div class="message-icon" th:each="content : ${contents}">
+                <div class="message-id">
+                    ID : <span th:text="${content.id}"></span>
+                </div>
+
+                <div class="message-text">
+                    投稿 : <span th:text="${content.content}"></span>
+                </div>
+
+                <div class="btn-wrap">
+                    <div class="btn-delete">
+                        <form th:method="delete" th:action="@{/delete/{id}(id=${content.id})}">
+                            <input type="submit" value="削除">
+                        </form>
+                    </div>
+
+                    <a class="btn-edit" th:href="@{/edit/{id}(id=${content.id})}">
+                        <input type="button" value="編集">
+                    </a>
+                </div>
+
+                <div class="comment-wrap">
+                    <div th:each="comment: ${comments}">
+                        <div th:if="${comment.contentId} == ${content.id}">
+                            <p class="comment-text">
+                                コメント : <span th:text="${comment.comment}"></span>
+                            </p>
+
+                            <div class="btn-wrap">
+                                <div class="btn-delete">
+                                    <form th:method="delete" th:action="@{/deleteComment/{id}(id=${comment.id})}">
+                                        <input type="submit" value="削除">
+                                    </form>
+                                </div>
+
+                                <a class="btn-comment-edit" th:href="@{/editComment/{id}(id=${comment.id})}">
+                                    <input type="button" value="編集">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-comment">
+                        <form th:method="post" th:action="@{/comment/{contentId}(contentId=${content.id})}" th:object="${commentForm}">
+                            <textarea class="tweet-box" th:field="*{comment}" size="20" maxlength="200"></textarea>
+                            <br/>
+                            <input type="submit" value="コメント">
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </body>
+</html>
