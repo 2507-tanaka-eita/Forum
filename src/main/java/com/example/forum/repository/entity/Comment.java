@@ -1,6 +1,8 @@
 package com.example.forum.repository.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 
@@ -20,6 +22,7 @@ public class Comment {
         this.id = id;
     }
 
+    //---------
     @Column
     private String comment;
 
@@ -30,6 +33,7 @@ public class Comment {
         this.comment = comment;
     }
 
+    //---------
     @Column
     private int contentId;
 
@@ -40,7 +44,10 @@ public class Comment {
         this.contentId = contentId;
     }
 
-    @Column
+    //---------
+    @Column(updatable = false)
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
     public Date getCreatedDate() {
@@ -50,7 +57,10 @@ public class Comment {
         this.createdDate = createdDate;
     }
 
+    //---------
     @Column
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
 
     public Date getUpdatedDate() {

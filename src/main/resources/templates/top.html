@@ -16,7 +16,21 @@
                 <button class="new-button" type="button">新規投稿</button>
             </a>
 
+            <div class="filterDate">
+                <form th:method="get" th:action="@{/}" th:object="${filterForm}">
+                    日付 :
+                    <input type="date" name="startDate" th:field="*{startDate}">
+                    <input type="date" name="endDate" th:field="*{endDate}">
+                    <input type="submit" value="絞り込み">
+                </form>
+            </div>
+
             <div class="message-icon" th:each="content : ${contents}">
+                <div class="message-date">
+                    <!-- Date型はミリ秒まで扱う。ブラウザ表示上はミリ秒を消したいので日付フォーマットを指定 -->
+                    <span th:text="${#dates.format(content.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                </div>
+
                 <div class="message-id">
                     ID : <span th:text="${content.id}"></span>
                 </div>

@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
     // JpaRepositoryを継承。
-    // Service側でJpaRepositoryクラスのメソッドを使用する為、このクラス内にメソッドの記述はなし。
+    // Service側でJpaRepositoryクラスのメソッド(findAllとか)を使用する場合は、このクラス内にメソッドの記述は不要。
 }

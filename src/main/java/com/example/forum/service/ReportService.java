@@ -3,9 +3,12 @@ package com.example.forum.service;
 import com.example.forum.controller.form.ReportForm;
 import com.example.forum.repository.ReportRepository;
 import com.example.forum.repository.entity.Report;
+import com.example.forum.service.dto.FilterDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +18,13 @@ public class ReportService {
     ReportRepository reportRepository;
 
     /*
-     * レコード全件取得処理
+     * レコード取得処理
      */
-    public List<ReportForm> findAllReport() {
-        List<Report> results = reportRepository.findAll();
+    public List<ReportForm> findAllReport(FilterDto filterDto) {
+        LocalDateTime start = filterDto.getStartDateTime();
+        LocalDateTime end = filterDto.getEndDateTime();
+
+        List<Report> results = reportRepository.findByCreatedDateBetween(start,end);
         List<ReportForm> reports = setReportForm(results);
         return reports;
     }
@@ -35,6 +41,7 @@ public class ReportService {
             // データセット
             report.setId(result.getId());
             report.setContent(result.getContent());
+            report.setCreatedDate(result.getCreatedDate());
             reports.add(report);
         }
         return reports;

@@ -11,6 +11,7 @@ public class CommentForm {
     private Date createdDate;
     private Date updatedDate;
 
+    //---------
     public int getId() {
         return id;
     }
@@ -18,6 +19,7 @@ public class CommentForm {
         this.id = id;
     }
 
+    //---------
     public String getComment() {
         return comment;
     }
@@ -25,6 +27,7 @@ public class CommentForm {
         this.comment = comment;
     }
 
+    //---------
     public int getContentId() {
         return contentId;
     }
@@ -32,6 +35,7 @@ public class CommentForm {
         this.contentId = contentId;
     }
 
+    //---------
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -39,6 +43,7 @@ public class CommentForm {
         this.createdDate = createdDate;
     }
 
+    //---------
     public Date getUpdatedDate() {
         return updatedDate;
     }

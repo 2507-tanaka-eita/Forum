@@ -1,9 +1,11 @@
 package com.example.forum.controller;
 
 import com.example.forum.controller.form.CommentForm;
+import com.example.forum.controller.form.FilterForm;
 import com.example.forum.controller.form.ReportForm;
 import com.example.forum.service.CommentService;
 import com.example.forum.service.ReportService;
+import com.example.forum.service.dto.FilterDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -28,11 +32,32 @@ public class ForumController {
      * 投稿内容表示処理
      */
     @GetMapping
-    public ModelAndView top(@ModelAttribute("commentForm") CommentForm commentForm) {
+    public ModelAndView top(
+            @ModelAttribute("commentForm") CommentForm commentForm,
+            @ModelAttribute("filterForm") FilterForm filterForm) {
         ModelAndView mav = new ModelAndView();
 
-        // 投稿を全件取得
-        List<ReportForm> contentData = reportService.findAllReport();
+        LocalDate startDate = filterForm.getStartDate();
+        LocalDate endDate = filterForm.getEndDate();
+
+        FilterDto filterDto = new FilterDto();
+
+        // Form→Dtoへの詰め替え（LocalDate→LocalDateTime）
+        // FormはLocalDate型で受け取っているため、条件式は「null」のみ
+        if (startDate != null) {
+            filterDto.setStartDateTime(startDate.atStartOfDay());
+        } else {
+            filterDto.setStartDateTime(LocalDateTime.of(2020, 1, 1, 0, 0, 0));
+        }
+
+        if (endDate != null) {
+            filterDto.setEndDateTime(endDate.atTime(23, 59, 59));
+        } else {
+            filterDto.setEndDateTime(LocalDateTime.now());
+        }
+
+        // 投稿を取得(日付条件なし＝全件取得／日付条件あり＝条件に合わせて絞り込んで取得)
+        List<ReportForm> contentData = reportService.findAllReport(filterDto);
         // 投稿データオブジェクトを保管
         mav.addObject("contents", contentData);
 
