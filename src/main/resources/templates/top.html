@@ -17,7 +17,7 @@
             </a>
 
             <div class="filterDate">
-                <form th:method="get" th:action="@{/}" th:object="${filterForm}">
+                <form th:method="get" action="./" th:object="${filterForm}">
                     日付 :
                     <input type="date" name="startDate" th:field="*{startDate}">
                     <input type="date" name="endDate" th:field="*{endDate}">
@@ -26,13 +26,13 @@
             </div>
 
             <div class="message-icon" th:each="content : ${contents}">
+                <div class="message-id">
+                    ID : <span th:text="${content.id}"></span>
+                </div>
+
                 <div class="message-date">
                     <!-- Date型はミリ秒まで扱う。ブラウザ表示上はミリ秒を消したいので日付フォーマットを指定 -->
                     <span th:text="${#dates.format(content.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
-                </div>
-
-                <div class="message-id">
-                    ID : <span th:text="${content.id}"></span>
                 </div>
 
                 <div class="message-text">
@@ -53,7 +53,12 @@
 
                 <div class="comment-wrap">
                     <div th:each="comment: ${comments}">
-                        <div th:if="${comment.contentId} == ${content.id}">
+                        <div th:if="${commentForm.contentId} == ${content.id}">
+                            <div class="message-date">
+                                <!-- Date型はミリ秒まで扱う。ブラウザ表示上はミリ秒を消したいので日付フォーマットを指定 -->
+                                <span th:text="${#dates.format(comment.updatedDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                            </div>
+
                             <p class="comment-text">
                                 コメント : <span th:text="${comment.comment}"></span>
                             </p>
@@ -75,12 +80,22 @@
                     <div class="btn-comment">
                         <form th:method="post" th:action="@{/comment/{contentId}(contentId=${content.id})}" th:object="${commentForm}">
                             <textarea class="tweet-box" th:field="*{comment}" size="20" maxlength="200"></textarea>
+
+                            <!-- エラーメッセージ表示 -->
+                            <div th:if="${commentForm.contentId} == ${content.id}">
+                                <div th:if="${#fields.hasErrors('comment')}" style="color:red;">
+                                    <p th:errors="*{comment}"></p>
+                                </div>
+                            </div>
+
+                            <p th:text="'DEBUG - commentForm.contentId: ' + ${commentForm.contentId}"></p>
+                            <p th:text="'DEBUG - content.id: ' + ${content.id}"></p>
+
                             <br/>
                             <input type="submit" value="コメント">
                         </form>
                     </div>
                 </div>
-
             </div>
         </div>
     </body>

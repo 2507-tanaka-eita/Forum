@@ -2,6 +2,10 @@ body {
 	background-color: #E0FFFF;
 }
 
+p {
+    margin: 0;
+}
+
 .header-contents {
 	margin-left: 20px;
 }
@@ -12,6 +16,10 @@ body {
 	background-color: #B4CCCC;
 	height: 100%;
 	width: 80%;
+}
+
+.main-contents .filterDate {
+    margin-bottom: 20px;
 }
 
 .footer-contents {

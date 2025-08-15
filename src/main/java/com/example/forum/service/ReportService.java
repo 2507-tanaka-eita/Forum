@@ -1,11 +1,13 @@
 package com.example.forum.service;
 
 import com.example.forum.controller.form.ReportForm;
+import com.example.forum.repository.CommentRepository;
 import com.example.forum.repository.ReportRepository;
 import com.example.forum.repository.entity.Report;
 import com.example.forum.service.dto.FilterDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,6 +19,9 @@ public class ReportService {
     @Autowired
     ReportRepository reportRepository;
 
+    @Autowired
+    CommentRepository commentRepository;
+
     /*
      * レコード取得処理
      */
@@ -24,7 +29,7 @@ public class ReportService {
         LocalDateTime start = filterDto.getStartDateTime();
         LocalDateTime end = filterDto.getEndDateTime();
 
-        List<Report> results = reportRepository.findByCreatedDateBetween(start,end);
+        List<Report> results = reportRepository.findByCreatedDateBetweenOrderByUpdatedDateDesc(start,end);
         List<ReportForm> reports = setReportForm(results);
         return reports;
     }
@@ -42,6 +47,7 @@ public class ReportService {
             report.setId(result.getId());
             report.setContent(result.getContent());
             report.setCreatedDate(result.getCreatedDate());
+            report.setUpdatedDate(result.getUpdatedDate());
             reports.add(report);
         }
         return reports;
@@ -69,7 +75,10 @@ public class ReportService {
     /*
      * レコード削除
      */
+    @Transactional
     public void deleteReport(Integer id) {
+        // 投稿削除する際に関連するコメントも削除
+        commentRepository.deleteByContentId(id);
         reportRepository.deleteById(id);
     }
 

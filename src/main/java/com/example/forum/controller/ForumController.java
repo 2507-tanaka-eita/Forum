@@ -15,10 +15,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.validation.BindingResult;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import jakarta.validation.Valid;
+
 
 @Controller
 public class ForumController {
@@ -31,7 +35,7 @@ public class ForumController {
     /*
      * 投稿内容表示処理
      */
-    @GetMapping
+    @GetMapping("/")
     public ModelAndView top(
             @ModelAttribute("commentForm") CommentForm commentForm,
             @ModelAttribute("filterForm") FilterForm filterForm) {
@@ -112,7 +116,16 @@ public class ForumController {
      * 新規投稿処理
      */
     @PostMapping("/add")
-    public ModelAndView addContent(@ModelAttribute("formModel") ReportForm reportForm){
+    public ModelAndView addContent(@ModelAttribute("formModel") @Valid ReportForm reportForm,BindingResult bindingResult){
+        // 投稿入力に関するバリデーション
+        if (bindingResult.hasErrors()) {
+            // バリデーションエラーがある場合、フォームを再表示
+            ModelAndView mav = new ModelAndView("new");
+            // 入力値を保持して表示
+            mav.addObject("formModel", reportForm);
+            return mav;
+        }
+
         // 投稿をテーブルに格納
         reportService.saveReport(reportForm);
 
@@ -126,7 +139,7 @@ public class ForumController {
      */
     @DeleteMapping("/delete/{id}")
     public ModelAndView deleteContent(@PathVariable Integer id){
-        // 投稿をテーブルに格納
+        // レコード削除
         reportService.deleteReport(id);
 
         // rootへリダイレクト
@@ -138,7 +151,16 @@ public class ForumController {
      * 投稿の編集処理
      */
     @PutMapping("/update/{id}")
-    public ModelAndView updateContent(@PathVariable Integer id, @ModelAttribute("formModel") ReportForm report){
+    public ModelAndView updateContent(@PathVariable Integer id, @ModelAttribute("formModel") @Valid ReportForm report,BindingResult bindingResult){
+        // 投稿編集に関するバリデーション
+        if (bindingResult.hasErrors()) {
+            // バリデーションエラーがある場合、フォームを再表示
+            ModelAndView mav = new ModelAndView("edit");
+            // 入力値を保持して表示
+            mav.addObject("formModel", report);
+            return mav;
+        }
+
         // 編集内容(textarea)をentityにセット
         report.setId(id);
 

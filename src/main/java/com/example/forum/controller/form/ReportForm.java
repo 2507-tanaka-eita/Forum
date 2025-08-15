@@ -2,11 +2,16 @@ package com.example.forum.controller.form;
 
 import java.util.Date;
 
+import com.example.forum.validation.NotOnlyWhitespace;
+
 // Viewへの入出力に使用
 public class ReportForm {
 
     private int id;
+
+    @NotOnlyWhitespace(message = "投稿内容を入力してください")
     private String content;
+
     private Date createdDate;
     private Date updatedDate;
 
