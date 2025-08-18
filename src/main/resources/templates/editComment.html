@@ -16,6 +16,12 @@
                 <div class="form-area">
                     <label>コメント内容</label>
                     <textarea class="tweet-box" name="comment" th:field="*{comment}" size="20" maxlength="200"></textarea>
+
+                    <!-- エラーメッセージ表示 -->
+                    <div th:if="${#fields.hasErrors('comment')}" style="color:red;">
+                        <p th:errors="*{comment}"></p>
+                    </div>
+
                     <br/>
                     <input type="hidden" name="contentId" th:field="*{contentId}">
                     <input type="submit" value="更新" />
@@ -28,5 +34,6 @@
                 <input type="submit" value="戻る" />
             </form>
         </div>
+
     </body>
 </html>

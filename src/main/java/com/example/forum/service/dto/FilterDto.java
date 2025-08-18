@@ -4,7 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
-// FilterFormで受け取った日付情報をLocalDate→LocalDateTime型に変換するのに使用
+// FilterFormで受け取った日付情報をLocalDate→LocalDateTime型に変換するのに使用。
 public class FilterDto {
 
     private LocalDateTime startDateTime;

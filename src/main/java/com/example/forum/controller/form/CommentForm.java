@@ -4,7 +4,7 @@ import com.example.forum.validation.NotOnlyWhitespace;
 
 import java.util.Date;
 
-// Viewへの入出力に使用
+// Viewへの入出力に使用。
 public class CommentForm {
 
     private int id;

@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.example.forum.validation.NotOnlyWhitespace;
 
-// Viewへの入出力に使用
+// Viewへの入出力に使用。
 public class ReportForm {
 
     private int id;

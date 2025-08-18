@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +25,7 @@ public class ReportService {
      * レコード取得処理
      */
     public List<ReportForm> findAllReport(FilterDto filterDto) {
+        // DBの抽出条件で使用する為、Dtoから日付情報を取得。
         LocalDateTime start = filterDto.getStartDateTime();
         LocalDateTime end = filterDto.getEndDateTime();
 
@@ -43,7 +43,7 @@ public class ReportService {
         for (int i = 0; i < results.size(); i++) {
             ReportForm report = new ReportForm();
             Report result = results.get(i);
-            // データセット
+            // データセット。
             report.setId(result.getId());
             report.setContent(result.getContent());
             report.setCreatedDate(result.getCreatedDate());
@@ -66,7 +66,7 @@ public class ReportService {
      */
     private Report setReportEntity(ReportForm reqReport) {
         Report report = new Report();
-        // データセット
+        // データセット。
         report.setId(reqReport.getId());
         report.setContent(reqReport.getContent());
         return report;
@@ -77,7 +77,7 @@ public class ReportService {
      */
     @Transactional
     public void deleteReport(Integer id) {
-        // 投稿削除する際に関連するコメントも削除
+        // 投稿削除する際に関連するコメントも削除。
         commentRepository.deleteByContentId(id);
         reportRepository.deleteById(id);
     }

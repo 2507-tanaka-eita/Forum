@@ -6,7 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 
-// データベースのアクセスに使用
+// データベースのアクセスに使用。
 @Entity
 @Table(name = "comments")
 public class Comment {

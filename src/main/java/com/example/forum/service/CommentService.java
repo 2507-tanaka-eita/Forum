@@ -37,7 +37,7 @@ public class CommentService {
         for (int i = 0; i < results.size(); i++) {
             CommentForm comment = new CommentForm();
             Comment result = results.get(i);
-            // データセット
+            // データセット。
             comment.setId(result.getId());
             comment.setComment(result.getComment());
             comment.setContentId(result.getContentId());
@@ -56,7 +56,7 @@ public class CommentService {
         Comment saveComment = setCommentEntity(reqComment);
         commentRepository.save(saveComment);
 
-        // コメントが入力されたらreportテーブルのupdated_dateも更新（ブラウザでの表示順を管理するため）
+        // コメントが入力されたらreportテーブルのupdated_dateも更新（ブラウザでの表示順を管理するため）。
         reportRepository.updateUpdatedDate(saveComment.getContentId(), LocalDateTime.now());
     }
 
@@ -65,7 +65,7 @@ public class CommentService {
      */
     private Comment setCommentEntity(CommentForm reqComment) {
         Comment comment = new Comment();
-        // データセット
+        // データセット。
         comment.setId(reqComment.getId());
         comment.setComment(reqComment.getComment());
         comment.setContentId(reqComment.getContentId());

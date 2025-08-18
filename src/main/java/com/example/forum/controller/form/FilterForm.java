@@ -4,7 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
-// 投稿を絞り込むための日付情報を保管するのに使用
+// 投稿を絞り込むための日付情報を保管するのに使用。
 public class FilterForm {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
